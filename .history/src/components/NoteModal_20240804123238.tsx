@@ -72,7 +72,7 @@ const NoteModal: React.FC<NoteModalProps> = ({ date, notes, onClose, onAddNote }
         recognitionRef.current.stop();
       }
     };
-  }, [onClose]);
+  }, [onClose, interimTranscript]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
