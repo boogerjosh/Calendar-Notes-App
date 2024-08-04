@@ -142,17 +142,18 @@ const NoteModal: React.FC<NoteModalProps> = ({ date, notes, onClose, onAddNote }
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="relative">
               <textarea
-                className="w-full h-32 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                className="w-full h-32 p-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                 value={noteContent + interimTranscript}
                 onChange={(e) => setNoteContent(e.target.value)}
                 placeholder="Enter your note here..."
+                readOnly={isListening}
               />
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 type="button"
                 onClick={toggleListening}
-                className={`absolute right-2 bottom-3 p-2 rounded-full ${isListening ? 'bg-red-500' : 'bg-blue-500'
+                className={`absolute right-2 bottom-2 p-2 rounded-full ${isListening ? 'bg-red-500' : 'bg-blue-500'
                   } text-white`}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

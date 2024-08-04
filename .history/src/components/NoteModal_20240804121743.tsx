@@ -146,6 +146,7 @@ const NoteModal: React.FC<NoteModalProps> = ({ date, notes, onClose, onAddNote }
                 value={noteContent + interimTranscript}
                 onChange={(e) => setNoteContent(e.target.value)}
                 placeholder="Enter your note here..."
+                readOnly={isListening}
               />
               <motion.button
                 whileHover={{ scale: 1.1 }}
