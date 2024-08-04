@@ -21,7 +21,7 @@ const App: React.FC = () => {
   const handleAddNote = (content: string) => {
     if (selectedDate) {
       const newNote: Note = {
-        id: Date.now().toString(),
+        id: Date.now().toString(), // Simple unique ID
         date: selectedDate,
         content
       };
@@ -35,8 +35,8 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 max-w-screen-lg">
-      <h1 className="text-2xl md:text-3xl font-bold mb-4 text-center">Calendar Notes App</h1>
+    <div className="container mx-auto p-4">
+      <h1 className="text-3xl font-bold mb-4">Calendar Notes App</h1>
       <Calendar onDateClick={handleDateClick} notes={notes} />
       {isModalOpen && selectedDate && (
         <NoteModal

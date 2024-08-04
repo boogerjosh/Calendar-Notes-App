@@ -3,7 +3,6 @@ import Calendar from './components/Calendar';
 import NoteModal from './components/NoteModal';
 
 interface Note {
-  id: string;
   date: Date;
   content: string;
 }
@@ -20,28 +19,18 @@ const App: React.FC = () => {
 
   const handleAddNote = (content: string) => {
     if (selectedDate) {
-      const newNote: Note = {
-        id: Date.now().toString(),
-        date: selectedDate,
-        content
-      };
-      setNotes([...notes, newNote]);
+      setNotes([...notes, { date: selectedDate, content }]);
       setIsModalOpen(false);
     }
   };
 
-  const getNotesForDate = (date: Date) => {
-    return notes.filter(note => note.date.toDateString() === date.toDateString());
-  };
-
   return (
-    <div className="container mx-auto p-4 max-w-screen-lg">
-      <h1 className="text-2xl md:text-3xl font-bold mb-4 text-center">Calendar Notes App</h1>
+    <div className="container mx-auto p-4">
+      <h1 className="text-3xl font-bold mb-4">Calendar Notes App</h1>
       <Calendar onDateClick={handleDateClick} notes={notes} />
       {isModalOpen && selectedDate && (
         <NoteModal
           date={selectedDate}
-          notes={getNotesForDate(selectedDate)}
           onClose={() => setIsModalOpen(false)}
           onAddNote={handleAddNote}
         />
