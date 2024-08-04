@@ -14,62 +14,52 @@ interface NoteModalProps {
   onAddNote: (content: string) => void;
 }
 
+// interface Window {
+//   SpeechRecognition: typeof SpeechRecognition;
+//   webkitSpeechRecognition: typeof SpeechRecognition;
+// }
+
 const NoteModal: React.FC<NoteModalProps> = ({ date, notes, onClose, onAddNote }) => {
   const [noteContent, setNoteContent] = useState('');
   const [activeNoteId, setActiveNoteId] = useState<string | null>(null);
   const [isListening, setIsListening] = useState(false);
-  const recognitionRef = useRef<SpeechRecognition | null>(null);
-  const [interimTranscript, setInterimTranscript] = useState('');
+  const recognitionRef = useRef(null);
 
-  useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
-    };
-    window.addEventListener('keydown', handleEscape);
+  // useEffect(() => {
+  //   const handleEscape = (event: KeyboardEvent) => {
+  //     if (event.key === 'Escape') {
+  //       onClose();
+  //     }
+  //   };
+  //   window.addEventListener('keydown', handleEscape);
 
-    // Initialize speech recognition
-    if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      recognitionRef.current = new SpeechRecognition();
-      recognitionRef.current.continuous = true;
-      recognitionRef.current.interimResults = true;
-      recognitionRef.current.lang = 'id-ID'; // Set language to Indonesian
+  //   // Initialize speech recognition
+  //   if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+  //     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  //     recognitionRef.current = new SpeechRecognition();
+  //     recognitionRef.current.continuous = true;
+  //     recognitionRef.current.interimResults = true;
 
-      recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
-        let interimTranscript = '';
-        let finalTranscript = '';
+  //     recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
+  //       const transcript = Array.from(event.results)
+  //         .map(result => result[0].transcript)
+  //         .join('');
+  //       setNoteContent(prevContent => prevContent + ' ' + transcript);
+  //     };
 
-        for (let i = event.resultIndex; i < event.results.length; ++i) {
-          if (event.results[i].isFinal) {
-            finalTranscript += event.results[i][0].transcript;
-          } else {
-            interimTranscript += event.results[i][0].transcript;
-          }
-        }
+  //     recognitionRef.current.onerror = (event: SpeechRecognitionErrorEvent) => {
+  //       console.error('Speech recognition error', event.error);
+  //       setIsListening(false);
+  //     };
+  //   }
 
-        setNoteContent(prevContent => prevContent + finalTranscript);
-        setInterimTranscript(interimTranscript);
-      };
-
-      recognitionRef.current.onerror = (event: SpeechRecognitionErrorEvent) => {
-        console.error('Speech recognition error', event.error);
-        setIsListening(false);
-      };
-
-      recognitionRef.current.onend = () => {
-        setIsListening(false);
-      };
-    }
-
-    return () => {
-      window.removeEventListener('keydown', handleEscape);
-      if (recognitionRef.current) {
-        recognitionRef.current.stop();
-      }
-    };
-  }, [onClose]);
+  //   return () => {
+  //     window.removeEventListener('keydown', handleEscape);
+  //     if (recognitionRef.current) {
+  //       recognitionRef.current.stop();
+  //     }
+  //   };
+  // }, [onClose]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -88,7 +78,6 @@ const NoteModal: React.FC<NoteModalProps> = ({ date, notes, onClose, onAddNote }
       recognitionRef.current?.stop();
     } else {
       recognitionRef.current?.start();
-      setInterimTranscript('');
     }
     setIsListening(!isListening);
   };
@@ -144,17 +133,12 @@ const NoteModal: React.FC<NoteModalProps> = ({ date, notes, onClose, onAddNote }
                 onChange={(e) => setNoteContent(e.target.value)}
                 placeholder="Enter your note here..."
               />
-              {interimTranscript && (
-                <div className="absolute left-0 right-12 bottom-0 p-2 bg-gray-100 text-gray-600 italic">
-                  {interimTranscript}
-                </div>
-              )}
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 type="button"
                 onClick={toggleListening}
-                className={`absolute right-2 bottom-3 p-2 rounded-full ${isListening ? 'bg-red-500' : 'bg-blue-500'
+                className={`absolute right-2 bottom-2 p-2 rounded-full ${isListening ? 'bg-red-500' : 'bg-blue-500'
                   } text-white`}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

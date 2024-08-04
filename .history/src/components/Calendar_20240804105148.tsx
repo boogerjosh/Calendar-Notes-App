@@ -46,8 +46,10 @@ const Calendar: React.FC<CalendarProps> = ({ onDateClick, notes }) => {
       const isToday = date.toDateString() === new Date().toDateString();
 
       days.push(
-        <div
+        <motion.div
           key={i}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           className={`p-1 md:p-2 rounded-lg cursor-pointer ${isToday ? 'bg-blue-500 text-white' : noteCount > 0 ? 'bg-blue-100' : 'bg-white hover:bg-gray-100'
             } transition-colors duration-200 shadow`}
           onClick={() => onDateClick(date)}
@@ -58,7 +60,7 @@ const Calendar: React.FC<CalendarProps> = ({ onDateClick, notes }) => {
               {noteCount}
             </div>
           )}
-        </div>
+        </motion.div>
       );
     }
 
@@ -151,7 +153,7 @@ const Calendar: React.FC<CalendarProps> = ({ onDateClick, notes }) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="grid grid-cols-7 gap-2"
+        className="grid grid-cols-7 gap-1"
       >
         {renderCalendarDays()}
       </motion.div>

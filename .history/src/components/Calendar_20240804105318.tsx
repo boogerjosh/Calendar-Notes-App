@@ -151,7 +151,7 @@ const Calendar: React.FC<CalendarProps> = ({ onDateClick, notes }) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="grid grid-cols-7 gap-2"
+        className="grid grid-cols-7 gap-1"
       >
         {renderCalendarDays()}
       </motion.div>
